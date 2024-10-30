@@ -1,0 +1,21 @@
+spring:
+  #config:
+    #import: "optional:configserver:http://localhost:8071/"
+  datasource:
+    url: jdbc:mysql://localhost:3306/userdb
+    username: root
+    password: root
+  jpa:
+    hibernate.ddl-auto: update
+    generate-ddl: true
+    show-sql: true
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+  application:
+    name: user
+  profiles:
+    active: dev
+
+#spring.liquibase.change-log=classpath:db/liquibase-changelog.xml
+#spring.liquibase.enabled=true
