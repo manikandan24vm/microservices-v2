@@ -51,7 +51,7 @@ public class ProductController {
             @ApiResponse(responseCode = "500",description = "internal server error",content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     @GetMapping("/product/{productId}/{productName}")
-    public ResponseEntity<ProductDTO> getProductByIdOrName(@PathVariable Long productId,@PathVariable String productName){
+    public ResponseEntity<ProductDTO> getProductByIdOrName(@RequestParam(required = false) Long productId,@RequestParam(required = false) String productName){
         Product product=productService.getProductByIdOrName(productId,productName);
        return ResponseEntity.status(HttpStatus.OK).body(ProductMapper.toDTO(product));
     }

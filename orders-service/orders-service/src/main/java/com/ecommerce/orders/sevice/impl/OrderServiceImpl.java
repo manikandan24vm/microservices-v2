@@ -12,6 +12,8 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -32,7 +34,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAllOrders(Long userId, Long productId) {
+    public List<Order> getAllOrders(Long userId) {
         List<Order> orders = ordersRepository.findAll();
         if (!CollectionUtils.isEmpty(orders)) {
             return orders;
@@ -69,5 +71,17 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Double calculateTotalAmount(Double price, Long quantity) {
         return (quantity==0)?price:quantity*price;
+    }
+
+    @Override
+    public Set<Order> getOrderByUserId(Long userId) {
+        Set<Order> orders = ordersRepository.findOrderByUserId(userId).orElseThrow(()-> new OrderNotFoundException("Orders not found for the user :"+userId));
+       // Set<Order> orders= ordersRepository.findOrderByUserId(userId).stream().collect(Collectors.toSet());
+        if(!CollectionUtils.isEmpty(orders)){
+           return orders;
+        }
+        else {
+            throw new OrdersException("Orders not found");
+        }
     }
 }

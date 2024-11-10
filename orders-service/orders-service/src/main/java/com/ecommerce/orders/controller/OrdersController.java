@@ -18,6 +18,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
@@ -40,12 +42,25 @@ public class OrdersController {
             @ApiResponse(responseCode = "500",description = "internal server error",content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     @GetMapping("/order/{userId}/{productId}")
-    public ResponseEntity<List<OrdersDTO>> getAllOrders(@PathVariable Long userId, @PathVariable Long productId){
-       List<OrdersDTO> orders= orderService.getAllOrders(userId,productId)
+    public ResponseEntity<List<OrdersDTO>> getAllOrders(@PathVariable Long userId){
+       List<OrdersDTO> orders= orderService.getAllOrders(userId)
                 .stream()
                 .map(OrdersMapper::ordersDTO)
                 .toList();
        return ResponseEntity.status(HttpStatus.OK).body(orders);
+    }
+    @Operation(description = "Get all orders",summary = "provides ability to retrieve the orders")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "orders are retrieved successfully"),
+            @ApiResponse(responseCode = "500",description = "internal server error",content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+    })
+    @GetMapping("/order/user/{userId}")
+    public ResponseEntity<Set<OrdersDTO>> getOrderByUserId(@PathVariable Long userId){
+        Set<OrdersDTO> orders= orderService.getOrderByUserId(userId)
+                .stream()
+                .map(OrdersMapper::ordersDTO)
+                .collect(Collectors.toSet());
+        return ResponseEntity.status(HttpStatus.OK).body(orders);
     }
 
     @Operation(description = "get orders by id",summary = "provides ability to retrieve the order")

@@ -1,6 +1,7 @@
 package com.ecommers.product_service.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -20,10 +21,10 @@ public class ProductDTO {
     @NotEmpty@NotEmpty(message = "description cannot be empty")
     @NotNull(message = "description cannot be null")
     private String description;
-    @NotEmpty(message = "price cannot be empty")
     @NotNull(message = "price cannot be null")
     private double price;
-    @NotEmpty
+
     @NotNull
+    @JsonProperty("stockAvailable")
     private boolean isStockAvailable;
 }

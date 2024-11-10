@@ -33,7 +33,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProductByIdOrName(Long productId, String productName) {
-        return productRepository.findByIdOrName(productId, productName);
+        return productRepository.findByIdOrName(productId, productName).orElseThrow(()-> new ProductNotFoundException("product not found"));
     }
 
     @Override
